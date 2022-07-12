@@ -53,13 +53,8 @@ test-unit:
 	@echo Running unit tests...
 	@go test -race -failfast -v ./...
 
-## test-integration: Run the integration tests.
-test-integration: install
-	@echo Running integration tests...
-	@go test -race -failfast -v -timeout 60m ./integration/...
-
 ## test: Run unit and integration tests.
-test: govet test-unit test-integration
+test: govet lint test-unit
 
 help: Makefile
 	@echo

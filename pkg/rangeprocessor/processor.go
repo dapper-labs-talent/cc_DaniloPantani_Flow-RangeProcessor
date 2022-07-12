@@ -15,6 +15,7 @@ type (
 
 	// RangeResponseProcessor represents the chain range processor
 	RangeResponseProcessor struct {
+		m            sync.Mutex
 		activeRange  uint64
 		minResponses uint64
 		nextHeight   int64
@@ -79,16 +80,13 @@ func (r *RangeResponseProcessor) ProcessRange(startHeight uint64, blocks []Block
 			// if reach the minimal responses, add the new block
 			if counter >= r.minResponses {
 				r.blocks.Store(height, block)
+				r.m.Lock()
 				if int64(height) >= r.nextHeight-1 {
 					r.nextHeight = int64(height) + 1
 				}
+				r.m.Unlock()
 			}
 		}()
 	}
 	wg.Wait()
-}
-
-// Equals returns true if two blocks are equal
-func (b Block) Equals(cmp Block) bool {
-	return b == cmp
 }
