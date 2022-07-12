@@ -1,6 +1,8 @@
 package rangeprocessor
 
 import (
+	"fmt"
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -291,5 +293,73 @@ func TestBlock_Equals(t *testing.T) {
 			got := tt.b.Equals(tt.cmp)
 			require.Equal(t, tt.want, got)
 		})
+	}
+}
+
+func BenchmarkPrimeNumbers(b *testing.B) {
+	inputs := []int{0, 100, 1000, 10000, 50000, 100000, 500000}
+
+	type fields struct {
+		activeRange    uint64
+		lastHeight     uint64
+		blockResponses int64
+	}
+	tests := []struct {
+		name        string
+		fields      fields
+		blockInputs []int
+	}{
+		{
+			name: "test valid parameters",
+			fields: fields{
+				activeRange:    33,
+				lastHeight:     10,
+				blockResponses: 7,
+			},
+			blockInputs: inputs,
+		},
+		{
+			name: "test empty range",
+			fields: fields{
+				activeRange:    0,
+				lastHeight:     10,
+				blockResponses: 7,
+			},
+			blockInputs: inputs,
+		},
+		{
+			name: "test empty height",
+			fields: fields{
+				activeRange:    33,
+				lastHeight:     0,
+				blockResponses: 7,
+			},
+			blockInputs: inputs,
+		},
+		{
+			name: "test empty block responses",
+			fields: fields{
+				activeRange:    33,
+				lastHeight:     10,
+				blockResponses: 0,
+			},
+			blockInputs: inputs,
+		},
+	}
+	for _, tt := range tests {
+		for _, inputs := range tt.blockInputs {
+			b.Run(fmt.Sprintf("%s_%d", tt.name, inputs), func(b *testing.B) {
+				r := New(tt.fields.activeRange, tt.fields.lastHeight, tt.fields.blockResponses)
+
+				blocks := make([]Block, inputs)
+				for i := 0; i < inputs; i++ {
+					blocks[i] = Block("block_" + strconv.Itoa(i))
+				}
+
+				for i := 0; i < b.N; i++ {
+					r.ProcessRange(uint64(i), blocks)
+				}
+			})
+		}
 	}
 }
