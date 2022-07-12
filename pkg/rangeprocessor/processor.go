@@ -39,6 +39,13 @@ func New(activeRange, blockResponses uint64, startHeight int64) RangeResponsePro
 	}
 }
 
+// GetActiveRange returns the current active range.
+func (r *RangeResponseProcessor) GetActiveRange() (minHeight uint64, maxHeight uint64) {
+	minHeight = uint64(r.nextHeight)
+	maxHeight = minHeight + r.activeRange - 1
+	return
+}
+
 // Equals returns true if two blocks are equal
 func (b Block) Equals(cmp Block) bool {
 	return b == cmp
