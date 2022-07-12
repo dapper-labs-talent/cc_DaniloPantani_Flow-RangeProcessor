@@ -25,8 +25,8 @@ func TestRangeResponseProcessor_GetActiveRange(t *testing.T) {
 				lastHeight:     10,
 				blockResponses: 7,
 			},
-			wantMinHeight: 10,
-			wantMaxHeight: 42,
+			wantMinHeight: 7,
+			wantMaxHeight: 39,
 		},
 		{
 			name: "test empty range",
@@ -35,8 +35,8 @@ func TestRangeResponseProcessor_GetActiveRange(t *testing.T) {
 				lastHeight:     10,
 				blockResponses: 7,
 			},
-			wantMinHeight: 10,
-			wantMaxHeight: 10,
+			wantMinHeight: 7,
+			wantMaxHeight: 7,
 		},
 		{
 			name: "test empty height",
@@ -45,8 +45,8 @@ func TestRangeResponseProcessor_GetActiveRange(t *testing.T) {
 				lastHeight:     0,
 				blockResponses: 7,
 			},
-			wantMinHeight: 0,
-			wantMaxHeight: 32,
+			wantMinHeight: 7,
+			wantMaxHeight: 39,
 		},
 		{
 			name: "test empty block responses",
@@ -55,8 +55,8 @@ func TestRangeResponseProcessor_GetActiveRange(t *testing.T) {
 				lastHeight:     10,
 				blockResponses: 0,
 			},
-			wantMinHeight: 10,
-			wantMaxHeight: 42,
+			wantMinHeight: 0,
+			wantMaxHeight: 32,
 		},
 	}
 	for _, tt := range tests {
