@@ -32,3 +32,23 @@ type Block string
 - ❗Please approach this as you would a real-world production problem. Apply the same quality expectations as you would when submitting an ideal PR to your own team.
 - ❗When submitting: please include any necessary details on the implementation, assumptions, time complexity or other relevant info to share.
 - If anything remains unclear about this problem don’t hesitate to ask your Talent team associate who can get follow-ups from engineering.
+
+## Helpful commands
+
+- Makefile developer commands:
+
+```shell
+make help
+```
+
+- Run unit test:
+
+```shell
+make test
+```
+
+- Run example:
+
+```shell
+go run ./cmd 
+```
